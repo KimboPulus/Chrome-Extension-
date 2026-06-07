@@ -2,6 +2,9 @@
 
 Focus Meter is a Chrome extension that tracks active browsing time and blocks websites after a daily limit is reached.
 
+![Dashboard overview](docs/images/overview.png)
+![Dashboard overview](docs/images/overview2.png)
+
 ## Features
 
 - Counts time while a page is visible and recently used
