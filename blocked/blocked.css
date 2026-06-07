@@ -1,0 +1,52 @@
+body {
+  display: grid;
+  min-height: 100vh;
+  padding: 24px;
+  place-items: center;
+  background: #eef1f5;
+}
+
+.blocked-card {
+  width: min(480px, 100%);
+  padding: 42px;
+  text-align: center;
+}
+
+.stop-mark {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  color: #ffffff;
+  border-radius: 50%;
+  background: #d43a47;
+  font-size: 42px;
+  font-weight: 800;
+  place-items: center;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #315efb;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+h1 {
+  margin: 8px 0 12px;
+}
+
+.site-name {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 28px;
+}
+

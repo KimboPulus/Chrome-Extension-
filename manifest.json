@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Focus Meter",
+  "version": "1.0.0",
+  "description": "Tracks active browsing time and blocks distracting websites.",
+  "permissions": [
+    "alarms",
+    "declarativeNetRequest",
+    "idle",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Focus Meter"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content/activity.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options/options.html",
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "blocked/blocked.html",
+        "blocked/blocked.css",
+        "blocked/blocked.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
+

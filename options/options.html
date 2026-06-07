@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Focus Meter settings</title>
+  <link rel="stylesheet" href="../styles/common.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main class="settings-page">
+    <header>
+      <p class="eyebrow">FOCUS METER</p>
+      <h1>Settings</h1>
+      <p class="muted">Choose which websites to block and how much time you want to allow.</p>
+    </header>
+
+    <form id="settings-form">
+      <section class="card settings-section">
+        <h2>Always blocked</h2>
+        <p class="muted">Enter one website per line.</p>
+        <textarea id="blocked-sites" rows="7" placeholder="instagram.com&#10;tiktok.com"></textarea>
+      </section>
+
+      <section class="card settings-section">
+        <div class="section-heading">
+          <div>
+            <h2>Daily limits</h2>
+            <p class="muted">A website is blocked after its daily allowance is used.</p>
+          </div>
+          <button id="add-limit" class="secondary-button" type="button">Add website</button>
+        </div>
+        <div id="limits-list" class="limits-list"></div>
+      </section>
+
+      <section class="card settings-section compact-section">
+        <label for="idle-threshold">
+          <strong>Idle threshold</strong>
+          <span class="muted">Stop counting after this many seconds without computer activity.</span>
+        </label>
+        <input id="idle-threshold" type="number" min="15" max="900" step="5">
+      </section>
+
+      <div class="form-actions">
+        <p id="save-status" role="status"></p>
+        <button class="primary-button" type="submit">Save settings</button>
+      </div>
+    </form>
+  </main>
+
+  <template id="limit-row-template">
+    <div class="limit-row">
+      <input class="limit-domain" type="text" placeholder="youtube.com" aria-label="Website">
+      <div class="minutes-input">
+        <input class="limit-minutes" type="number" min="1" max="1440" aria-label="Minutes per day">
+        <span>min/day</span>
+      </div>
+      <button class="remove-limit" type="button" aria-label="Remove limit">Remove</button>
+    </div>
+  </template>
+
+  <script src="../lib/domain.js"></script>
+  <script src="../lib/storage.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,55 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  color: #1d2530;
+  background: #f4f6f8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.card {
+  border: 1px solid #dce1e7;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(34, 48, 64, 0.07);
+}
+
+.muted {
+  color: #66717f;
+}
+
+.primary-button {
+  padding: 10px 16px;
+  color: #ffffff;
+  background: #315efb;
+}
+
+.primary-button:hover {
+  background: #244bd3;
+}
+
+.secondary-button {
+  padding: 9px 14px;
+  color: #273244;
+  border: 1px solid #cfd6df;
+  background: #ffffff;
+}
+

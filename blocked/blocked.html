@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Website blocked</title>
+  <link rel="stylesheet" href="../styles/common.css">
+  <link rel="stylesheet" href="blocked.css">
+</head>
+<body>
+  <main class="blocked-card card">
+    <div class="stop-mark" aria-hidden="true">!</div>
+    <p class="eyebrow">FOCUS METER</p>
+    <h1>This website is blocked</h1>
+    <p id="blocked-site" class="site-name"></p>
+    <p id="blocked-reason" class="muted">It is listed in your Focus Meter settings.</p>
+    <div class="actions">
+      <button id="go-back" class="primary-button" type="button">Go back</button>
+      <button id="open-options" class="secondary-button" type="button">Settings</button>
+    </div>
+  </main>
+  <script src="blocked.js"></script>
+</body>
+</html>
+

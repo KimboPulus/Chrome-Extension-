@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Focus Meter</title>
+  <link rel="stylesheet" href="../styles/common.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="popup">
+    <header>
+      <p class="eyebrow">TODAY</p>
+      <h1 id="total-time">0 min</h1>
+      <p class="muted">active browsing time</p>
+    </header>
+
+    <section aria-labelledby="sites-title">
+      <div class="section-heading">
+        <h2 id="sites-title">Websites</h2>
+        <span id="site-count" class="muted">0</span>
+      </div>
+      <div id="usage-list" class="usage-list">
+        <p class="empty-state">No activity recorded yet.</p>
+      </div>
+    </section>
+
+    <button id="open-options" class="secondary-button" type="button">Open settings</button>
+  </main>
+  <script src="../lib/domain.js"></script>
+  <script src="../lib/storage.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
+
