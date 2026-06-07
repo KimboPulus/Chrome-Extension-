@@ -51,6 +51,71 @@ body {
   gap: 9px;
 }
 
+.usage-row {
+  padding: 12px;
+  border: 1px solid #dce1e7;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.usage-topline,
+.usage-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.usage-topline {
+  margin-bottom: 6px;
+}
+
+.usage-domain {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.usage-time {
+  flex: 0 0 auto;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.usage-meta {
+  color: #6f7a88;
+  font-size: 11px;
+}
+
+.usage-status.blocked {
+  color: #b12a36;
+  font-weight: 700;
+}
+
+.progress-track {
+  height: 5px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e8ecf1;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: inherit;
+  background: #315efb;
+}
+
+.progress-bar.warning {
+  background: #df8b18;
+}
+
+.progress-bar.blocked {
+  background: #d43a47;
+}
+
 .empty-state {
   padding: 24px 10px;
   margin: 0;
@@ -63,4 +128,3 @@ body {
 #open-options {
   width: 100%;
 }
-
