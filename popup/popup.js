@@ -65,8 +65,6 @@ function buildUsageRow(domain, data, settings, runtimeState) {
     status.classList.add("blocked");
   } else if (limit && percent >= settings.warningPercent) {
     status.textContent = `${Math.round(percent)}% used`;
-  } else {
-    status.textContent = "Active";
   }
 
   if (limit) {
@@ -102,10 +100,11 @@ async function renderPopup() {
   const entries = Object.entries(stats)
     .filter(([, data]) => Number(data.activeMs) > 0)
     .sort(([, left], [, right]) => right.activeMs - left.activeMs);
+  const visibleEntries = entries.slice(0, 5);
 
   const totalMs = entries.reduce((sum, [, data]) => sum + data.activeMs, 0);
   totalTime.textContent = formatDuration(totalMs);
-  siteCount.textContent = String(entries.length);
+  siteCount.textContent = String(visibleEntries.length);
   usageList.replaceChildren();
 
   if (entries.length === 0) {
@@ -116,7 +115,7 @@ async function renderPopup() {
     return;
   }
 
-  for (const [domain, data] of entries) {
+  for (const [domain, data] of visibleEntries) {
     usageList.append(buildUsageRow(domain, data, settings, runtimeState));
   }
 }
