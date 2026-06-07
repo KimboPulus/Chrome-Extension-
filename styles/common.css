@@ -25,6 +25,18 @@ button {
   cursor: pointer;
 }
 
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(49, 94, 251, 0.3);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 .card {
   border: 1px solid #dce1e7;
   border-radius: 12px;
@@ -52,4 +64,3 @@ button {
   border: 1px solid #cfd6df;
   background: #ffffff;
 }
-

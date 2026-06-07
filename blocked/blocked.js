@@ -13,8 +13,13 @@ if (reason === "limit") {
     "You have reached today's time limit. Access returns tomorrow.";
 }
 
-document.getElementById("go-back").addEventListener("click", () => history.back());
+document.getElementById("go-back").addEventListener("click", () => {
+  if (history.length > 1) {
+    history.back();
+  } else {
+    chrome.tabs.update({ url: "chrome://newtab/" });
+  }
+});
 document.getElementById("open-options").addEventListener("click", () => {
   chrome.runtime.openOptionsPage();
 });
-

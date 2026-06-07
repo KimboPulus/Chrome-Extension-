@@ -95,6 +95,8 @@ async function loadSettings() {
 settingsForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   showStatus("");
+  const saveButton = settingsForm.querySelector('button[type="submit"]');
+  saveButton.disabled = true;
 
   try {
     const idleThresholdSeconds = Number(idleThresholdInput.value);
@@ -119,6 +121,8 @@ settingsForm.addEventListener("submit", async (event) => {
     showStatus("Settings saved.");
   } catch (error) {
     showStatus(error.message, true);
+  } finally {
+    saveButton.disabled = false;
   }
 });
 
