@@ -156,7 +156,7 @@ async function updateBadge(tabId, domain, stats, settings, runtimeState) {
   ]);
 }
 
-async function validateActiveTab(tab, idleThresholdSeconds, pulseMode) {
+async function validateActiveTab(tab, idleThresholdSeconds, requestedMode) {
   if (!tab?.id || !tab.active || !FocusDomain.isTrackableUrl(tab.url)) {
     return null;
   }
@@ -166,10 +166,15 @@ async function validateActiveTab(tab, idleThresholdSeconds, pulseMode) {
     chrome.windows.get(tab.windowId),
     chrome.idle.queryState(idleThresholdSeconds)
   ]);
+  const pulseMode = FocusTracking.resolvePulseMode(
+    requestedMode,
+    currentTab.audible === true
+  );
 
   if (
     !currentTab.active ||
     !browserWindow.focused ||
+    !pulseMode ||
     !FocusTracking.canCountIdleState(pulseMode, idleState) ||
     !FocusDomain.isTrackableUrl(currentTab.url)
   ) {
@@ -178,6 +183,7 @@ async function validateActiveTab(tab, idleThresholdSeconds, pulseMode) {
 
   return {
     domain: FocusDomain.normalizeSite(currentTab.url),
+    pulseMode,
     tab: currentTab
   };
 }

@@ -25,9 +25,13 @@ for (const eventName of activityEvents) {
 }
 
 function hasPlayingMedia() {
-  return [...document.querySelectorAll("video, audio")].some(
+  const mediaElementPlaying = [...document.querySelectorAll("video, audio")].some(
     FocusTracking.isMediaElementPlaying
   );
+  const mediaSessionPlaying =
+    navigator.mediaSession?.playbackState === "playing";
+
+  return mediaElementPlaying || mediaSessionPlaying;
 }
 
 function sendActivityPulse() {
@@ -37,7 +41,7 @@ function sendActivityPulse() {
     mediaPlaying: hasPlayingMedia()
   });
 
-  if (document.visibilityState !== "visible" || !mode) {
+  if (document.visibilityState !== "visible") {
     return;
   }
 

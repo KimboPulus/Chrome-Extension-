@@ -49,6 +49,9 @@ body {
 .usage-list {
   display: grid;
   gap: 9px;
+  max-height: 360px;
+  padding-right: 4px;
+  overflow-y: auto;
 }
 
 .usage-row {

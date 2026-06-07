@@ -5,10 +5,11 @@ const totalTime = document.getElementById("total-time");
 const siteCount = document.getElementById("site-count");
 
 function formatDuration(milliseconds) {
+  const totalSeconds = Math.floor(milliseconds / 1000);
   const totalMinutes = Math.floor(milliseconds / 60000);
 
   if (totalMinutes < 1) {
-    return "<1 min";
+    return totalSeconds < 1 ? "<1 sec" : `${totalSeconds} sec`;
   }
 
   const hours = Math.floor(totalMinutes / 60);
@@ -115,7 +116,7 @@ async function renderPopup() {
     return;
   }
 
-  for (const [domain, data] of entries.slice(0, 8)) {
+  for (const [domain, data] of entries) {
     usageList.append(buildUsageRow(domain, data, settings, runtimeState));
   }
 }
