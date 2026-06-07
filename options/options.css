@@ -114,9 +114,19 @@ textarea {
   min-height: 42px;
 }
 
+.privacy-note {
+  margin: 2px 4px;
+  color: #66717f;
+  font-size: 13px;
+}
+
 #save-status {
   margin: 0;
   color: #287546;
+}
+
+#save-status.error {
+  color: #b12a36;
 }
 
 @media (max-width: 620px) {
@@ -134,4 +144,3 @@ textarea {
     width: 100%;
   }
 }
-
