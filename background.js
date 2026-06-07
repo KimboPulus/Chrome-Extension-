@@ -16,6 +16,14 @@ function clearActivitySessions() {
   activitySessions.clear();
 }
 
+function clearNonMediaSessions() {
+  for (const [tabId, session] of activitySessions) {
+    if (session.pulseMode !== FocusTracking.PULSE_MODES.MEDIA) {
+      activitySessions.delete(tabId);
+    }
+  }
+}
+
 function findMatchingLimit(domain, dailyLimits) {
   for (const [ruleDomain, minutes] of Object.entries(dailyLimits)) {
     if (FocusDomain.domainMatches(domain, ruleDomain)) {
@@ -173,8 +181,8 @@ async function validateActiveTab(tab, idleThresholdSeconds, requestedMode) {
 
   if (
     !currentTab.active ||
-    !browserWindow.focused ||
     !pulseMode ||
+    !FocusTracking.canCountWindowState(pulseMode, browserWindow.focused) ||
     !FocusTracking.canCountIdleState(pulseMode, idleState) ||
     !FocusDomain.isTrackableUrl(currentTab.url)
   ) {
@@ -215,10 +223,15 @@ async function recordActivityPulse(sender, requestedMode) {
   const previous = activitySessions.get(activePage.tab.id);
   activitySessions.set(activePage.tab.id, {
     domain: activePage.domain,
+    pulseMode: activePage.pulseMode,
     timestamp: now
   });
 
-  if (!previous || previous.domain !== activePage.domain) {
+  if (
+    !previous ||
+    previous.domain !== activePage.domain ||
+    previous.pulseMode !== activePage.pulseMode
+  ) {
     const [stats, runtimeState] = await Promise.all([
       FocusStorage.getStats(),
       FocusStorage.getRuntimeState()
@@ -379,7 +392,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
     activitySessions.delete(tabId);
   }
 });
-chrome.windows.onFocusChanged.addListener(clearActivitySessions);
+chrome.windows.onFocusChanged.addListener(clearNonMediaSessions);
 chrome.idle.onStateChanged.addListener(clearActivitySessions);
 
 ensureInitialized().catch(console.error);

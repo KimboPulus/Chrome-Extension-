@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 const {
   PULSE_MODES,
   canCountIdleState,
+  canCountWindowState,
   isMediaElementPlaying,
   normalizePulseMode,
   resolvePulseMode,
@@ -85,4 +86,11 @@ test("playing media counts while idle but never while locked", () => {
   assert.equal(canCountIdleState(PULSE_MODES.INTERACTION, "idle"), false);
   assert.equal(canCountIdleState(PULSE_MODES.MEDIA, "locked"), false);
   assert.equal(canCountIdleState(PULSE_MODES.INTERACTION, "active"), true);
+});
+
+test("playing media counts outside the browser window", () => {
+  assert.equal(canCountWindowState(PULSE_MODES.MEDIA, false), true);
+  assert.equal(canCountWindowState(PULSE_MODES.INTERACTION, false), false);
+  assert.equal(canCountWindowState(PULSE_MODES.FOREGROUND, false), false);
+  assert.equal(canCountWindowState(PULSE_MODES.INTERACTION, true), true);
 });
