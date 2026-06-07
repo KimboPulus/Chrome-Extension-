@@ -1,6 +1,6 @@
 "use strict";
 
-importScripts("lib/domain.js", "lib/storage.js");
+importScripts("lib/domain.js", "lib/storage.js", "lib/tracking.js");
 
 const MAX_INCREMENT_MS = 10000;
 const activitySessions = new Map();
@@ -156,7 +156,7 @@ async function updateBadge(tabId, domain, stats, settings, runtimeState) {
   ]);
 }
 
-async function validateActiveTab(tab, idleThresholdSeconds) {
+async function validateActiveTab(tab, idleThresholdSeconds, pulseMode) {
   if (!tab?.id || !tab.active || !FocusDomain.isTrackableUrl(tab.url)) {
     return null;
   }
@@ -170,7 +170,7 @@ async function validateActiveTab(tab, idleThresholdSeconds) {
   if (
     !currentTab.active ||
     !browserWindow.focused ||
-    idleState !== "active" ||
+    !FocusTracking.canCountIdleState(pulseMode, idleState) ||
     !FocusDomain.isTrackableUrl(currentTab.url)
   ) {
     return null;
@@ -182,7 +182,7 @@ async function validateActiveTab(tab, idleThresholdSeconds) {
   };
 }
 
-async function recordActivityPulse(sender) {
+async function recordActivityPulse(sender, requestedMode) {
   const dayCheck = await FocusStorage.ensureCurrentDay();
   if (dayCheck.changed) {
     clearActivitySessions();
@@ -191,7 +191,12 @@ async function recordActivityPulse(sender) {
 
   const tab = sender.tab;
   const settings = await FocusStorage.getSettings();
-  const activePage = await validateActiveTab(tab, settings.idleThresholdSeconds);
+  const pulseMode = FocusTracking.normalizePulseMode(requestedMode);
+  const activePage = await validateActiveTab(
+    tab,
+    settings.idleThresholdSeconds,
+    pulseMode
+  );
 
   if (!activePage) {
     if (tab?.id) {
@@ -296,7 +301,7 @@ function ensureInitialized() {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === "ACTIVITY_PULSE") {
-    queueStorageWork(() => recordActivityPulse(sender))
+    queueStorageWork(() => recordActivityPulse(sender, message.mode))
       .then(sendResponse)
       .catch((error) => {
         console.error("Could not record activity.", error);
@@ -306,10 +311,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
-  if (message?.type === "SETTINGS_UPDATED") {
-    clearActivitySessions();
-    queueStorageWork(rebuildBlockingRules)
-      .then(() => sendResponse({ updated: true }))
+  if (message?.type === "SAVE_SETTINGS") {
+    queueStorageWork(async () => {
+      const settings = await FocusStorage.saveSettings(message.settings);
+      clearActivitySessions();
+      await rebuildBlockingRules();
+      const rules = await chrome.declarativeNetRequest.getDynamicRules();
+
+      return {
+        settings,
+        blockingRuleCount: rules.length
+      };
+    })
+      .then(sendResponse)
       .catch((error) => sendResponse({ error: error.message }));
 
     return true;

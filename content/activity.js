@@ -24,16 +24,27 @@ for (const eventName of activityEvents) {
   });
 }
 
+function hasPlayingMedia() {
+  return [...document.querySelectorAll("video, audio")].some(
+    FocusTracking.isMediaElementPlaying
+  );
+}
+
 function sendActivityPulse() {
   const recentlyActive = Date.now() - lastActivityAt <= RECENT_ACTIVITY_MS;
+  const mode = FocusTracking.selectPulseMode({
+    recentlyActive,
+    mediaPlaying: hasPlayingMedia()
+  });
 
-  if (document.visibilityState !== "visible" || !recentlyActive) {
+  if (document.visibilityState !== "visible" || !mode) {
     return;
   }
 
-  chrome.runtime.sendMessage({ type: "ACTIVITY_PULSE" }).catch(() => {
+  chrome.runtime.sendMessage({ type: "ACTIVITY_PULSE", mode }).catch(() => {
     // The extension may be reloading while this page is still open.
   });
 }
 
+document.addEventListener("playing", sendActivityPulse, true);
 setInterval(sendActivityPulse, PULSE_INTERVAL_MS);

@@ -4,9 +4,10 @@ Focus Meter is a Chrome extension that tracks active browsing time and blocks we
 
 ## Features
 
-- Counts time only while a page is visible and recently used
+- Counts time while a page is visible and recently used
+- Keeps counting when visible video or audio is playing in the focused tab
 - Checks that the Chrome window is focused
-- Stops counting when the computer is idle or locked
+- Stops interaction tracking when the computer is idle and all tracking when it is locked
 - Shows today's usage in the popup
 - Supports permanently blocked websites
 - Supports daily time limits
@@ -31,16 +32,16 @@ Blocked websites are entered one per line. Daily limits use minutes per day. Dom
 
 ## How tracking works
 
-The content script watches for recent keyboard, pointer, scrolling, and touch activity. It sends a pulse every five seconds while the page is visible and recently active.
+The content script watches for recent keyboard, pointer, scrolling, and touch activity. It sends a pulse every five seconds while the page is visible and recently active. It also sends media pulses while a visible tab is playing video or audio.
 
 The background service worker counts a pulse only when:
 
 - the sending tab is still active,
 - its Chrome window is focused,
-- the computer is active,
+- the computer is active, or media is playing while the computer is idle but unlocked,
 - and the URL is a normal website.
 
-Each recorded increment is capped at ten seconds. This prevents large time jumps after sleep, browser suspension, or a service worker restart.
+Each recorded increment is capped at ten seconds. This prevents large time jumps after sleep, browser suspension, or a service worker restart. Media time stops when playback is paused, the tab is no longer active, Chrome loses focus, or the screen is locked.
 
 ## Privacy
 
@@ -57,7 +58,6 @@ npm run check
 
 ## Current limitations
 
-- Tracking uses active interaction time only. Video foreground time is not included yet.
+- Media playback is detected through standard HTML video and audio elements. Custom players that do not expose one may require site-specific support.
 - Domain normalization strips common `www.` and `m.` prefixes but does not use a public suffix database.
 - Incognito tracking is not enabled by default.
-

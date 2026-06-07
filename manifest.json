@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Focus Meter",
-  "version": "1.0.0",
-  "description": "Tracks active browsing time and blocks distracting websites.",
+  "version": "1.1.0",
+  "description": "Tracks active browsing and focused media playback, then blocks distracting websites.",
   "permissions": [
     "alarms",
     "declarativeNetRequest",
@@ -37,6 +37,7 @@
         "https://*/*"
       ],
       "js": [
+        "lib/tracking.js",
         "content/activity.js"
       ],
       "run_at": "document_idle"

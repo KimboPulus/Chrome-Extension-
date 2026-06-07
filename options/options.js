@@ -23,60 +23,22 @@ function showStatus(message, isError = false) {
 }
 
 function parseBlockedSites() {
-  const sites = [];
-
-  for (const line of blockedSitesInput.value.split(/\r?\n/)) {
-    const input = line.trim();
-    if (!input) {
-      continue;
-    }
-
-    const domain = FocusDomain.normalizeSite(input);
-    if (!domain) {
-      throw new Error(`"${input}" is not a valid website.`);
-    }
-
-    sites.push(domain);
-  }
-
-  return [...new Set(sites)];
+  return FocusSettings.parseBlockedSites(
+    blockedSitesInput.value,
+    FocusDomain.normalizeSite
+  );
 }
 
 function parseDailyLimits() {
-  const limits = {};
+  const rows = [...limitsList.querySelectorAll(".limit-row")].map((row) => ({
+    domain: row.querySelector(".limit-domain").value,
+    minutes: row.querySelector(".limit-minutes").value
+  }));
 
-  for (const row of limitsList.querySelectorAll(".limit-row")) {
-    const rawDomain = row.querySelector(".limit-domain").value.trim();
-    const rawMinutes = row.querySelector(".limit-minutes").value;
-
-    if (!rawDomain) {
-      continue;
-    }
-
-    const domain = FocusDomain.normalizeSite(rawDomain);
-    const minutes = Number(rawMinutes);
-
-    if (!domain) {
-      throw new Error(`"${rawDomain}" is not a valid website.`);
-    }
-
-    if (!Number.isFinite(minutes) || minutes < 1 || minutes > 1440) {
-      throw new Error(`Enter a limit from 1 to 1440 minutes for ${domain}.`);
-    }
-
-    if (Object.hasOwn(limits, domain)) {
-      throw new Error(`${domain} has more than one daily limit.`);
-    }
-
-    limits[domain] = Math.round(minutes);
-  }
-
-  return limits;
+  return FocusSettings.parseDailyLimits(rows, FocusDomain.normalizeSite);
 }
 
-async function loadSettings() {
-  const settings = await FocusStorage.getSettings();
-
+function populateSettings(settings) {
   blockedSitesInput.value = settings.blockedSites.join("\n");
   idleThresholdInput.value = settings.idleThresholdSeconds;
   limitsList.replaceChildren();
@@ -90,6 +52,11 @@ async function loadSettings() {
   for (const [domain, minutes] of entries) {
     addLimitRow(domain, minutes);
   }
+}
+
+async function loadSettings() {
+  const settings = await FocusStorage.getSettings();
+  populateSettings(settings);
 }
 
 settingsForm.addEventListener("submit", async (event) => {
@@ -108,17 +75,25 @@ settingsForm.addEventListener("submit", async (event) => {
       throw new Error("Idle threshold must be between 15 and 900 seconds.");
     }
 
-    await FocusStorage.saveSettings({
-      blockedSites: parseBlockedSites(),
-      dailyLimits: parseDailyLimits(),
-      idleThresholdSeconds
+    const response = await chrome.runtime.sendMessage({
+      type: "SAVE_SETTINGS",
+      settings: {
+        blockedSites: parseBlockedSites(),
+        dailyLimits: parseDailyLimits(),
+        idleThresholdSeconds
+      }
     });
 
-    await chrome.runtime
-      .sendMessage({ type: "SETTINGS_UPDATED" })
-      .catch(() => undefined);
+    if (!response || response.error) {
+      throw new Error(response?.error || "The background worker did not respond.");
+    }
 
-    showStatus("Settings saved.");
+    populateSettings(response.settings);
+    const ruleLabel =
+      response.blockingRuleCount === 1 ? "blocking rule" : "blocking rules";
+    showStatus(
+      `Settings saved. ${response.blockingRuleCount} active ${ruleLabel}.`
+    );
   } catch (error) {
     showStatus(error.message, true);
   } finally {

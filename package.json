@@ -1,11 +1,10 @@
 {
   "name": "focus-meter-extension",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "A local-first Chrome extension for tracking active browsing time.",
   "scripts": {
-    "check": "node --check background.js && node --check content/activity.js && node --check popup/popup.js && node --check options/options.js && node --check blocked/blocked.js",
+    "check": "node --check background.js && node --check content/activity.js && node --check popup/popup.js && node --check options/options.js && node --check blocked/blocked.js && node --check lib/domain.js && node --check lib/settings.js && node --check lib/storage.js && node --check lib/tracking.js",
     "test": "node --test"
   }
 }
-
