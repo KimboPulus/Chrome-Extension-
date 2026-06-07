@@ -2,6 +2,7 @@
 
 const limitsList = document.getElementById("limits-list");
 const limitRowTemplate = document.getElementById("limit-row-template");
+const limitsEmpty = document.getElementById("limits-empty");
 const settingsForm = document.getElementById("settings-form");
 const blockedSitesInput = document.getElementById("blocked-sites");
 const idleThresholdInput = document.getElementById("idle-threshold");
@@ -11,8 +12,16 @@ function addLimitRow(domain = "", minutes = 30) {
   const row = limitRowTemplate.content.firstElementChild.cloneNode(true);
   row.querySelector(".limit-domain").value = domain;
   row.querySelector(".limit-minutes").value = minutes;
-  row.querySelector(".remove-limit").addEventListener("click", () => row.remove());
+  row.querySelector(".remove-limit").addEventListener("click", () => {
+    row.remove();
+    updateLimitsEmptyState();
+  });
   limitsList.append(row);
+  updateLimitsEmptyState();
+}
+
+function updateLimitsEmptyState() {
+  limitsEmpty.hidden = Boolean(limitsList.querySelector(".limit-row"));
 }
 
 document.getElementById("add-limit").addEventListener("click", () => addLimitRow());
@@ -40,18 +49,17 @@ function parseDailyLimits() {
 
 function populateSettings(settings) {
   blockedSitesInput.value = settings.blockedSites.join("\n");
-  idleThresholdInput.value = settings.idleThresholdSeconds;
-  limitsList.replaceChildren();
+  idleThresholdInput.value = FocusSettings.secondsToMinutes(
+    settings.idleThresholdSeconds
+  );
+  limitsList.querySelectorAll(".limit-row").forEach((row) => row.remove());
 
   const entries = Object.entries(settings.dailyLimits);
-  if (entries.length === 0) {
-    addLimitRow();
-    return;
-  }
-
   for (const [domain, minutes] of entries) {
     addLimitRow(domain, minutes);
   }
+
+  updateLimitsEmptyState();
 }
 
 async function loadSettings() {
@@ -66,14 +74,9 @@ settingsForm.addEventListener("submit", async (event) => {
   saveButton.disabled = true;
 
   try {
-    const idleThresholdSeconds = Number(idleThresholdInput.value);
-    if (
-      !Number.isFinite(idleThresholdSeconds) ||
-      idleThresholdSeconds < 15 ||
-      idleThresholdSeconds > 900
-    ) {
-      throw new Error("Idle threshold must be between 15 and 900 seconds.");
-    }
+    const idleThresholdSeconds = FocusSettings.minutesToSeconds(
+      idleThresholdInput.value
+    );
 
     const response = await chrome.runtime.sendMessage({
       type: "SAVE_SETTINGS",

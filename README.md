@@ -28,7 +28,7 @@ The extension starts tracking normal `http` and `https` pages after it is loaded
 
 Open the extension popup and click **Open settings**.
 
-Blocked websites are entered one per line. Daily limits use minutes per day. Domains can be entered as `youtube.com` or as a full URL; they are normalized before saving.
+Blocked websites can be separated by lines, commas, or spaces. Daily limits and the idle threshold are displayed in minutes. Domains can be entered as `youtube.com` or as a full URL; they are normalized before saving.
 
 ## How tracking works
 

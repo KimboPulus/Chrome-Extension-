@@ -19,7 +19,7 @@
       <section class="card settings-section">
         <h2>Always blocked</h2>
         <p class="muted">Separate websites with a new line, comma, or space.</p>
-        <textarea id="blocked-sites" rows="7" placeholder="instagram.com&#10;tiktok.com"></textarea>
+        <textarea id="blocked-sites" rows="7" placeholder="Example sites:&#10;instagram.com&#10;tiktok.com"></textarea>
       </section>
 
       <section class="card settings-section">
@@ -30,15 +30,20 @@
           </div>
           <button id="add-limit" class="secondary-button" type="button">Add website</button>
         </div>
-        <div id="limits-list" class="limits-list"></div>
+        <div id="limits-list" class="limits-list">
+          <p id="limits-empty" class="limits-empty">No daily limits added.</p>
+        </div>
       </section>
 
       <section class="card settings-section compact-section">
         <label for="idle-threshold">
           <strong>Idle threshold</strong>
-          <span class="muted">Stop counting after this many seconds without computer activity.</span>
+          <span class="muted">Stop interaction tracking after this many minutes without computer activity.</span>
         </label>
-        <input id="idle-threshold" type="number" min="15" max="900" step="5">
+        <div class="idle-input">
+          <input id="idle-threshold" type="number" min="0.25" max="15" step="0.25" aria-label="Idle threshold in minutes">
+          <span>minutes</span>
+        </div>
       </section>
 
       <p class="privacy-note">

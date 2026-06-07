@@ -4,8 +4,10 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const { normalizeSite } = require("../lib/domain");
 const {
+  minutesToSeconds,
   parseBlockedSites,
-  parseDailyLimits
+  parseDailyLimits,
+  secondsToMinutes
 } = require("../lib/settings");
 
 test("accepts common separators between blocked sites", () => {
@@ -59,4 +61,21 @@ test("rejects duplicate daily limits", () => {
       ),
     /more than one daily limit/
   );
+});
+
+test("converts stored seconds to display minutes", () => {
+  assert.equal(secondsToMinutes(60), 1);
+  assert.equal(secondsToMinutes(75), 1.25);
+  assert.equal(secondsToMinutes(900), 15);
+});
+
+test("converts entered minutes back to stored seconds", () => {
+  assert.equal(minutesToSeconds(0.25), 15);
+  assert.equal(minutesToSeconds(1.25), 75);
+  assert.equal(minutesToSeconds(15), 900);
+});
+
+test("rejects an idle threshold outside the supported range", () => {
+  assert.throws(() => minutesToSeconds(0.1), /0.25 and 15 minutes/);
+  assert.throws(() => minutesToSeconds(16), /0.25 and 15 minutes/);
 });

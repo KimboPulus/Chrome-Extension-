@@ -72,6 +72,25 @@ textarea {
   width: 110px;
 }
 
+.idle-input {
+  position: relative;
+  width: 150px;
+}
+
+.idle-input input {
+  width: 100%;
+  padding-right: 64px;
+}
+
+.idle-input span {
+  position: absolute;
+  top: 11px;
+  right: 10px;
+  color: #6b7684;
+  font-size: 13px;
+  pointer-events: none;
+}
+
 .compact-section label {
   display: grid;
   gap: 5px;
@@ -80,6 +99,16 @@ textarea {
 .limits-list {
   display: grid;
   gap: 10px;
+}
+
+.limits-empty {
+  padding: 18px;
+  margin: 0;
+  text-align: center;
+  color: #778391;
+  border: 1px dashed #cbd3dc;
+  border-radius: 9px;
+  background: #fafbfc;
 }
 
 .limit-row {
@@ -141,6 +170,10 @@ textarea {
   }
 
   .compact-section input {
+    width: 100%;
+  }
+
+  .idle-input {
     width: 100%;
   }
 }
