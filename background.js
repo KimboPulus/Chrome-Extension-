@@ -5,6 +5,7 @@ importScripts("lib/domain.js", "lib/storage.js");
 const MAX_INCREMENT_MS = 10000;
 const activitySessions = new Map();
 let storageQueue = Promise.resolve();
+let initializationPromise;
 
 function queueStorageWork(task) {
   storageQueue = storageQueue.then(task, task);
@@ -282,6 +283,17 @@ async function initializeExtension() {
   await chrome.alarms.create("daily-state-check", { periodInMinutes: 30 });
 }
 
+function ensureInitialized() {
+  if (!initializationPromise) {
+    initializationPromise = initializeExtension().catch((error) => {
+      initializationPromise = null;
+      throw error;
+    });
+  }
+
+  return initializationPromise;
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === "ACTIVITY_PULSE") {
     queueStorageWork(() => recordActivityPulse(sender))
@@ -321,11 +333,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 chrome.runtime.onInstalled.addListener(() => {
-  initializeExtension().catch(console.error);
+  ensureInitialized().catch(console.error);
 });
 
 chrome.runtime.onStartup.addListener(() => {
-  initializeExtension().catch(console.error);
+  ensureInitialized().catch(console.error);
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
@@ -350,4 +362,4 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
 chrome.windows.onFocusChanged.addListener(clearActivitySessions);
 chrome.idle.onStateChanged.addListener(clearActivitySessions);
 
-initializeExtension().catch(console.error);
+ensureInitialized().catch(console.error);
