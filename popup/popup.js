@@ -90,7 +90,7 @@ function buildUsageRow(domain, data, settings, runtimeState) {
 }
 
 async function renderPopup() {
-  await FocusStorage.ensureCurrentDay();
+  await chrome.runtime.sendMessage({ type: "CHECK_DAY" });
 
   const [stats, settings, runtimeState] = await Promise.all([
     FocusStorage.getStats(),
