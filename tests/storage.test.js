@@ -47,6 +47,20 @@ test("sanitizes settings before saving", async () => {
   assert.equal(saved.warningPercent, 100);
 });
 
+test("uses a 30 minute idle threshold by default", async () => {
+  const settings = await storage.getSettings();
+
+  assert.equal(settings.idleThresholdSeconds, 1800);
+});
+
+test("caps idle threshold at one day", async () => {
+  const saved = await storage.saveSettings({
+    idleThresholdSeconds: 90000
+  });
+
+  assert.equal(saved.idleThresholdSeconds, 86400);
+});
+
 test("adds active time without replacing an existing total", async () => {
   await storage.addActiveTime("youtube.com", 5000, "2026-06-07");
   const stats = await storage.addActiveTime(
@@ -83,4 +97,3 @@ test("does not reset the same local day twice", async () => {
   assert.equal(result.changed, false);
   assert.deepEqual(result.state.temporaryBlocks, ["youtube.com"]);
 });
-

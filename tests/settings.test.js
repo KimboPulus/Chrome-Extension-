@@ -67,15 +67,17 @@ test("converts stored seconds to display minutes", () => {
   assert.equal(secondsToMinutes(60), 1);
   assert.equal(secondsToMinutes(75), 1.25);
   assert.equal(secondsToMinutes(900), 15);
+  assert.equal(secondsToMinutes(1800), 30);
 });
 
 test("converts entered minutes back to stored seconds", () => {
   assert.equal(minutesToSeconds(0.25), 15);
   assert.equal(minutesToSeconds(1.25), 75);
   assert.equal(minutesToSeconds(15), 900);
+  assert.equal(minutesToSeconds(1440), 86400);
 });
 
 test("rejects an idle threshold outside the supported range", () => {
-  assert.throws(() => minutesToSeconds(0.1), /0.25 and 15 minutes/);
-  assert.throws(() => minutesToSeconds(16), /0.25 and 15 minutes/);
+  assert.throws(() => minutesToSeconds(0.1), /0.25 and 1440 minutes/);
+  assert.throws(() => minutesToSeconds(1440.25), /0.25 and 1440 minutes/);
 });
