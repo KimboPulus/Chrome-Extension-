@@ -20,10 +20,11 @@ Focus Meter is a Chrome extension that tracks active browsing time and blocks we
 ## Install
 
 1. Download or clone this repository.
-2. Open `chrome://extensions`.
-3. Enable **Developer mode**.
-4. Click **Load unpacked**.
-5. Select this project folder.
+2. Run `npm ci` and `npm run build`.
+3. Open `chrome://extensions`.
+4. Enable **Developer mode**.
+5. Click **Load unpacked**.
+6. Select the generated `dist` folder.
 
 The extension starts tracking normal `http` and `https` pages after it is loaded.
 
@@ -48,19 +49,25 @@ Media pulses are allowed to keep counting when Chrome loses focus or the compute
 
 ## Privacy
 
-Browsing totals and settings are stored with `chrome.storage.local`. The extension does not send browsing data to a server.
+Browsing totals and settings are stored with `chrome.storage.local`. In-progress tracking state uses `chrome.storage.session` so service-worker restarts do not bridge or lose active intervals. The extension does not send browsing data to a server. Export happens only after a user clicks an export control.
 
 ## Development
 
 Run the checks with:
 
 ```bash
+npm ci
+npm run format:check
+npm run lint
+npm run typecheck
 npm test
-npm run check
+npm run test:coverage
+npm run build
+npm run package
 ```
 
 ## Current limitations
 
 - Media playback is detected through standard HTML video and audio elements. Custom players that do not expose one may require site-specific support.
-- Domain normalization strips common `www.` and `m.` prefixes but does not use a public suffix database.
-- Incognito tracking is not enabled by default.
+- Incognito tracking is intentionally disabled.
+- Recurring schedule transitions are enforced by a one-minute alarm, so a boundary can take up to one minute to apply.

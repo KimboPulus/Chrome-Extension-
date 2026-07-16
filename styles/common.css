@@ -15,6 +15,7 @@ body {
 
 button,
 input,
+select,
 textarea {
   font: inherit;
 }
@@ -27,6 +28,7 @@ button {
 
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
 textarea:focus-visible {
   outline: 3px solid rgba(49, 94, 251, 0.3);
   outline-offset: 2px;
@@ -63,4 +65,38 @@ button:disabled {
   color: #273244;
   border: 1px solid #cfd6df;
   background: #ffffff;
+}
+
+.danger-button {
+  padding: 9px 14px;
+  color: #a21f2d;
+  border: 1px solid #e5b5bb;
+  background: #fff7f8;
+}
+
+.danger-button:hover {
+  background: #ffecef;
+}
+
+.status {
+  min-height: 18px;
+  margin: 0;
+  color: #287546;
+  font-size: 13px;
+}
+
+.status.error {
+  color: #b12a36;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

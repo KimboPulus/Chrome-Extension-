@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ES2023", "DOM", "WebWorker"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2022",
+    "types": ["chrome", "node", "vitest/globals"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "tools/**/*.mjs",
+    "*.config.ts",
+    "eslint.config.mjs",
+    "commitlint.config.mjs"
+  ]
+}

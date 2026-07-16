@@ -1,0 +1,179 @@
+body {
+  min-width: 300px;
+  min-height: 100vh;
+  background: #f4f6f8;
+}
+
+.dashboard {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+}
+
+.dashboard-header,
+.section-heading,
+.session-controls,
+.usage-topline,
+.usage-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.dashboard-header h1 {
+  margin: 3px 0 0;
+  font-size: 26px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #315efb;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.icon-button {
+  padding: 8px;
+  color: #315efb;
+  background: transparent;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.metric {
+  display: grid;
+  gap: 5px;
+  padding: 16px;
+}
+
+.metric span {
+  color: #66717f;
+  font-size: 12px;
+}
+
+.metric strong {
+  font-size: 24px;
+}
+
+.focus-session,
+.chart-card {
+  padding: 16px;
+}
+
+.focus-session h2,
+.section-heading h2 {
+  margin: 4px 0;
+  font-size: 16px;
+}
+
+.focus-session .muted {
+  margin: 0 0 14px;
+  font-size: 12px;
+}
+
+.session-controls {
+  justify-content: flex-start;
+}
+
+.session-controls label {
+  width: 70px;
+}
+
+.session-controls input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #c9d1dc;
+  border-radius: 8px;
+}
+
+.week-chart {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 7px;
+  height: 150px;
+  padding-top: 14px;
+}
+
+.day-bar {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 6px;
+  min-width: 0;
+}
+
+.bar-track {
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  border-radius: 5px;
+  background: #edf0f4;
+}
+
+.bar-fill {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 5px;
+  background: linear-gradient(#5479ff, #315efb);
+}
+
+.day-bar span {
+  overflow: hidden;
+  color: #66717f;
+  font-size: 10px;
+  text-align: center;
+}
+
+.usage-list {
+  display: grid;
+  gap: 9px;
+}
+
+.usage-row {
+  padding: 12px;
+  border: 1px solid #dce1e7;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.usage-domain {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.usage-time {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.usage-meta {
+  margin-top: 6px;
+  color: #6f7a88;
+  font-size: 10px;
+}
+
+.category-productive {
+  color: #287546;
+}
+
+.category-distracting {
+  color: #b12a36;
+}
+
+.empty-state {
+  padding: 22px 10px;
+  margin: 0;
+  text-align: center;
+  color: #66717f;
+  border: 1px dashed #cbd3dc;
+  border-radius: 10px;
+}

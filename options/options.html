@@ -1,76 +1,315 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Focus Meter settings</title>
-  <link rel="stylesheet" href="../styles/common.css">
-  <link rel="stylesheet" href="options.css">
-</head>
-<body>
-  <main class="settings-page">
-    <header>
-      <p class="eyebrow">FOCUS METER</p>
-      <h1>Settings</h1>
-      <p class="muted">Choose which websites to block and how much time you want to allow.</p>
-    </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Focus Meter settings</title>
+    <link rel="stylesheet" href="../styles/common.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="settings-page">
+      <header>
+        <p class="eyebrow">FOCUS METER</p>
+        <h1>Settings</h1>
+        <p class="muted">
+          Control tracking, categories, limits, schedules, and local data.
+        </p>
+      </header>
 
-    <form id="settings-form">
-      <section class="card settings-section">
-        <h2>Always blocked</h2>
-        <p class="muted">Separate websites with a new line, comma, or space.</p>
-        <textarea id="blocked-sites" rows="7" placeholder="Example sites:&#10;instagram.com&#10;tiktok.com"></textarea>
-      </section>
-
-      <section class="card settings-section">
-        <div class="section-heading">
-          <div>
-            <h2>Daily limits</h2>
-            <p class="muted">A website is blocked after its daily allowance is used.</p>
+      <form id="settings-form">
+        <section
+          class="card settings-section"
+          aria-labelledby="tracking-heading"
+        >
+          <h2 id="tracking-heading">Tracking and privacy</h2>
+          <label class="switch-row">
+            <span>
+              <strong>Active-time tracking</strong>
+              <small
+                >Pause all new activity recording without deleting
+                history.</small
+              >
+            </span>
+            <input id="tracking-enabled" type="checkbox" />
+          </label>
+          <div class="settings-grid">
+            <label>
+              <strong>Idle threshold</strong>
+              <span class="muted">Minutes without computer activity</span>
+              <input
+                id="idle-threshold"
+                type="number"
+                min="0.25"
+                max="1440"
+                step="0.25"
+                required
+              />
+            </label>
+            <label>
+              <strong>Warning point</strong>
+              <span class="muted">Percent of daily limit</span>
+              <input
+                id="warning-percent"
+                type="number"
+                min="1"
+                max="100"
+                step="1"
+                required
+              />
+            </label>
+            <label>
+              <strong>History retention</strong>
+              <span class="muted">Days stored locally</span>
+              <input
+                id="retention-days"
+                type="number"
+                min="1"
+                max="365"
+                step="1"
+                required
+              />
+            </label>
           </div>
-          <button id="add-limit" class="secondary-button" type="button">Add website</button>
-        </div>
-        <div id="limits-list" class="limits-list">
-          <p id="limits-empty" class="limits-empty">No daily limits added.</p>
-        </div>
-      </section>
+        </section>
 
-      <section class="card settings-section compact-section">
-        <label for="idle-threshold">
-          <strong>Idle threshold</strong>
-          <span class="muted">Stop interaction tracking after this many minutes without computer activity.</span>
+        <section class="card settings-section" aria-labelledby="blocks-heading">
+          <h2 id="blocks-heading">Always blocked</h2>
+          <p class="muted">
+            One domain per line. Subdomains match automatically.
+          </p>
+          <label class="sr-only" for="blocked-sites"
+            >Always-blocked websites</label
+          >
+          <textarea
+            id="blocked-sites"
+            rows="5"
+            placeholder="example.com&#10;social.example"
+          ></textarea>
+        </section>
+
+        <section class="card settings-section" aria-labelledby="limits-heading">
+          <div class="section-heading">
+            <div>
+              <h2 id="limits-heading">Daily budgets</h2>
+              <p class="muted">
+                Block a website when today's active time reaches its limit.
+              </p>
+            </div>
+            <button id="add-limit" class="secondary-button" type="button">
+              Add budget
+            </button>
+          </div>
+          <div id="limits-list" class="row-list"></div>
+          <p id="limits-empty" class="empty-row">No daily budgets.</p>
+        </section>
+
+        <section
+          class="card settings-section"
+          aria-labelledby="categories-heading"
+        >
+          <div class="section-heading">
+            <div>
+              <h2 id="categories-heading">Website categories</h2>
+              <p class="muted">
+                Focus score = productive / (productive + distracting) × 100.
+              </p>
+            </div>
+            <button id="add-category" class="secondary-button" type="button">
+              Add category
+            </button>
+          </div>
+          <div id="categories-list" class="row-list"></div>
+          <p id="categories-empty" class="empty-row">
+            No categories. Focus score stays unscored.
+          </p>
+        </section>
+
+        <section
+          class="card settings-section"
+          aria-labelledby="schedule-heading"
+        >
+          <h2 id="schedule-heading">Recurring focus schedule</h2>
+          <label class="switch-row">
+            <span>
+              <strong>Enable schedule</strong>
+              <small>Block selected sites during scheduled local time.</small>
+            </span>
+            <input id="schedule-enabled" type="checkbox" />
+          </label>
+          <fieldset>
+            <legend>Active days</legend>
+            <div class="day-picker">
+              <label
+                ><input
+                  type="checkbox"
+                  name="schedule-day"
+                  value="1"
+                />Mon</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="schedule-day"
+                  value="2"
+                />Tue</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="schedule-day"
+                  value="3"
+                />Wed</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="schedule-day"
+                  value="4"
+                />Thu</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="schedule-day"
+                  value="5"
+                />Fri</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="schedule-day"
+                  value="6"
+                />Sat</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="schedule-day"
+                  value="0"
+                />Sun</label
+              >
+            </div>
+          </fieldset>
+          <div class="settings-grid schedule-times">
+            <label>
+              <strong>Start</strong>
+              <input id="schedule-start" type="time" required />
+            </label>
+            <label>
+              <strong>End</strong>
+              <input id="schedule-end" type="time" required />
+            </label>
+          </div>
+          <label for="schedule-sites"
+            ><strong>Blocked during focus time</strong></label
+          >
+          <textarea
+            id="schedule-sites"
+            rows="4"
+            placeholder="youtube.com&#10;reddit.com"
+          ></textarea>
+        </section>
+
+        <section class="card settings-section" aria-labelledby="data-heading">
+          <h2 id="data-heading">Local data controls</h2>
+          <p class="muted">
+            <span id="storage-usage">0 KB</span> stored in this Chrome profile.
+          </p>
+          <div class="data-actions">
+            <button id="export-json" class="secondary-button" type="button">
+              Export backup
+            </button>
+            <button id="export-csv" class="secondary-button" type="button">
+              Export CSV
+            </button>
+            <button id="import-json" class="secondary-button" type="button">
+              Restore backup
+            </button>
+            <button id="reset-data" class="danger-button" type="button">
+              Delete usage data
+            </button>
+            <input
+              id="import-file"
+              type="file"
+              accept="application/json,.json"
+              hidden
+            />
+          </div>
+        </section>
+
+        <p class="privacy-note">
+          Browsing data never leaves this browser unless you export it.
+        </p>
+        <div class="form-actions">
+          <p id="save-status" role="status"></p>
+          <button class="primary-button" type="submit">Save settings</button>
+        </div>
+      </form>
+    </main>
+
+    <template id="limit-row-template">
+      <div class="config-row limit-row">
+        <label>
+          <span class="sr-only">Website</span>
+          <input
+            class="limit-domain"
+            type="text"
+            placeholder="youtube.com"
+            required
+          />
         </label>
-        <div class="idle-input">
-          <input id="idle-threshold" type="number" min="0.25" max="1440" step="0.25" aria-label="Idle threshold in minutes">
-          <span>minutes</span>
-        </div>
-      </section>
-
-      <p class="privacy-note">
-        Usage data and settings stay in this browser profile. Focus Meter does not send them to a server.
-      </p>
-
-      <div class="form-actions">
-        <p id="save-status" role="status"></p>
-        <button class="primary-button" type="submit">Save settings</button>
+        <label>
+          <span class="sr-only">Minutes per day</span>
+          <input
+            class="limit-minutes"
+            type="number"
+            min="1"
+            max="1440"
+            placeholder="30"
+            required
+          />
+        </label>
+        <span class="row-unit">min/day</span>
+        <button
+          class="remove-row"
+          type="button"
+          aria-label="Remove daily budget"
+        >
+          Remove
+        </button>
       </div>
-    </form>
-  </main>
+    </template>
 
-  <template id="limit-row-template">
-    <div class="limit-row">
-      <input class="limit-domain" type="text" placeholder="youtube.com" aria-label="Website">
-      <div class="minutes-input">
-        <input class="limit-minutes" type="number" min="1" max="1440" aria-label="Minutes per day">
-        <span>min/day</span>
+    <template id="category-row-template">
+      <div class="config-row category-row">
+        <label>
+          <span class="sr-only">Website</span>
+          <input
+            class="category-domain"
+            type="text"
+            placeholder="docs.example.com"
+            required
+          />
+        </label>
+        <label>
+          <span class="sr-only">Category</span>
+          <select class="category-value">
+            <option value="productive">Productive</option>
+            <option value="neutral">Neutral</option>
+            <option value="distracting">Distracting</option>
+          </select>
+        </label>
+        <button
+          class="remove-row"
+          type="button"
+          aria-label="Remove website category"
+        >
+          Remove
+        </button>
       </div>
-      <button class="remove-limit" type="button" aria-label="Remove limit">Remove</button>
-    </div>
-  </template>
+    </template>
 
-  <script src="../lib/domain.js"></script>
-  <script src="../lib/storage.js"></script>
-  <script src="../lib/settings.js"></script>
-  <script src="options.js"></script>
-</body>
+    <script src="options.js"></script>
+  </body>
 </html>

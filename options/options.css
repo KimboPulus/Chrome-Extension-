@@ -4,7 +4,7 @@ body {
 }
 
 .settings-page {
-  width: min(820px, calc(100% - 32px));
+  width: min(900px, calc(100% - 32px));
   margin: 0 auto;
   padding: 48px 0 80px;
 }
@@ -15,7 +15,7 @@ body {
 
 .settings-page h1 {
   margin: 6px 0;
-  font-size: 34px;
+  font-size: 36px;
 }
 
 .eyebrow {
@@ -32,20 +32,19 @@ body {
 }
 
 .settings-section {
+  display: grid;
+  gap: 16px;
   padding: 24px;
 }
 
-.settings-section h2 {
-  margin: 0 0 5px;
-  font-size: 19px;
-}
-
+.settings-section h2,
 .settings-section p {
-  margin: 0 0 16px;
+  margin: 0;
 }
 
 textarea,
-input {
+input,
+select {
   width: 100%;
   padding: 10px 11px;
   color: #1d2530;
@@ -60,87 +59,118 @@ textarea {
 }
 
 .section-heading,
-.compact-section,
-.form-actions {
+.switch-row,
+.form-actions,
+.data-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
 }
 
-.compact-section input {
-  width: 110px;
-}
-
-.idle-input {
-  position: relative;
-  width: 150px;
-}
-
-.idle-input input {
-  width: 100%;
-  padding-right: 64px;
-}
-
-.idle-input span {
-  position: absolute;
-  top: 11px;
-  right: 10px;
-  color: #6b7684;
-  font-size: 13px;
-  pointer-events: none;
-}
-
-.compact-section label {
+.switch-row span,
+.settings-grid label {
   display: grid;
   gap: 5px;
 }
 
-.limits-list {
+.switch-row small {
+  color: #66717f;
+}
+
+.switch-row input {
+  width: 22px;
+  height: 22px;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.settings-grid .muted {
+  min-height: 32px;
+  font-size: 12px;
+}
+
+.row-list {
   display: grid;
   gap: 10px;
 }
 
-.limits-empty {
+.empty-row {
   padding: 18px;
-  margin: 0;
   text-align: center;
-  color: #778391;
+  color: #66717f;
   border: 1px dashed #cbd3dc;
   border-radius: 9px;
   background: #fafbfc;
 }
 
-.limit-row {
+.config-row {
   display: grid;
-  grid-template-columns: minmax(180px, 1fr) 160px auto;
+  align-items: center;
   gap: 10px;
 }
 
-.minutes-input {
-  position: relative;
+.limit-row {
+  grid-template-columns: minmax(180px, 1fr) 120px auto auto;
 }
 
-.minutes-input input {
-  padding-right: 68px;
+.category-row {
+  grid-template-columns: minmax(180px, 1fr) 170px auto;
 }
 
-.minutes-input span {
-  position: absolute;
-  top: 11px;
-  right: 10px;
-  color: #6b7684;
+.row-unit {
+  color: #66717f;
   font-size: 13px;
 }
 
-.remove-limit {
-  padding: 0 10px;
+.remove-row {
+  padding: 8px;
   color: #b12a36;
   background: transparent;
 }
 
-.form-actions {
-  min-height: 42px;
+fieldset {
+  padding: 0;
+  border: 0;
+}
+
+legend {
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.day-picker {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day-picker label {
+  display: grid;
+  gap: 5px;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #dce1e7;
+  border-radius: 8px;
+}
+
+.day-picker input {
+  width: 18px;
+  height: 18px;
+  margin: 0 auto;
+}
+
+.schedule-times {
+  grid-template-columns: repeat(2, minmax(140px, 220px));
+}
+
+.data-actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .privacy-note {
@@ -158,22 +188,22 @@ textarea {
   color: #b12a36;
 }
 
-@media (max-width: 620px) {
-  .limit-row {
+@media (max-width: 680px) {
+  .settings-grid,
+  .limit-row,
+  .category-row,
+  .schedule-times {
     grid-template-columns: 1fr;
   }
 
-  .compact-section,
-  .section-heading {
+  .section-heading,
+  .switch-row,
+  .form-actions {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .compact-section input {
-    width: 100%;
-  }
-
-  .idle-input {
-    width: 100%;
+  .day-picker {
+    grid-template-columns: repeat(4, 1fr);
   }
 }

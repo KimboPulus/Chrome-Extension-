@@ -1,8 +1,7 @@
-node_modules/
 coverage/
 dist/
 release/
 playwright-report/
 test-results/
-*.log
-
+package-lock.json
+*.png

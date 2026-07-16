@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Focus Meter dashboard</title>
+    <link rel="stylesheet" href="../styles/common.css" />
+    <link rel="stylesheet" href="sidepanel.css" />
+  </head>
+  <body>
+    <main class="dashboard">
+      <header class="dashboard-header">
+        <div>
+          <p class="eyebrow">FOCUS METER</p>
+          <h1>Dashboard</h1>
+        </div>
+        <button
+          id="open-options"
+          class="icon-button"
+          type="button"
+          aria-label="Open settings"
+        >
+          Settings
+        </button>
+      </header>
+
+      <section class="metric-grid" aria-label="Today's metrics">
+        <article class="metric card">
+          <span>Active today</span>
+          <strong id="total-time">0m</strong>
+        </article>
+        <article class="metric card">
+          <span>Focus score</span>
+          <strong id="focus-score">—</strong>
+        </article>
+      </section>
+
+      <section class="card focus-session" aria-labelledby="session-heading">
+        <div>
+          <p class="eyebrow">DEEP FOCUS</p>
+          <h2 id="session-heading">Manual session</h2>
+          <p id="session-status" class="muted">
+            Blocks distracting and scheduled sites.
+          </p>
+        </div>
+        <div class="session-controls">
+          <label>
+            <span class="sr-only">Session length in minutes</span>
+            <input
+              id="session-minutes"
+              type="number"
+              min="5"
+              max="240"
+              value="25"
+            />
+          </label>
+          <span>min</span>
+          <button id="start-session" class="primary-button" type="button">
+            Start
+          </button>
+          <button id="stop-session" class="danger-button" type="button" hidden>
+            Stop
+          </button>
+        </div>
+      </section>
+
+      <section class="card chart-card" aria-labelledby="week-heading">
+        <div class="section-heading">
+          <h2 id="week-heading">Last 7 days</h2>
+          <span class="muted">Active time</span>
+        </div>
+        <div id="week-chart" class="week-chart"></div>
+      </section>
+
+      <section aria-labelledby="sites-heading">
+        <div class="section-heading">
+          <h2 id="sites-heading">Today by website</h2>
+          <span id="site-count" class="muted">0 sites</span>
+        </div>
+        <div id="usage-list" class="usage-list"></div>
+        <p id="empty-state" class="empty-state">No activity recorded today.</p>
+      </section>
+
+      <p id="dashboard-status" class="status" role="status"></p>
+    </main>
+    <script src="sidepanel.js"></script>
+  </body>
+</html>

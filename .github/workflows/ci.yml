@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Quality and package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: npm
+          node-version: 24
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Validate Conventional Commits
+        if: github.event_name == 'pull_request'
+        run: npx commitlint --from "${{ github.event.pull_request.base.sha }}" --to "${{ github.event.pull_request.head.sha }}"
+
+      - name: Run quality gates
+        run: npm run check
+
+      - name: Create release-grade package
+        run: npm run package
+
+      - name: Upload extension package
+        uses: actions/upload-artifact@v7
+        with:
+          if-no-files-found: error
+          name: focus-meter-${{ github.sha }}
+          path: release/*
+          retention-days: 14
+
+  e2e:
+    name: Chrome E2E and accessibility
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: npm
+          node-version: 24
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Install Chromium test runtime
+        run: npx playwright install --with-deps chromium
+
+      - name: Run extension smoke and accessibility tests
+        run: npm run e2e
+
+      - name: Upload E2E report on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report-${{ github.sha }}
+          path: playwright-report/
+          retention-days: 7

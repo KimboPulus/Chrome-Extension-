@@ -1,35 +1,50 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Focus Meter</title>
-  <link rel="stylesheet" href="../styles/common.css">
-  <link rel="stylesheet" href="popup.css">
-</head>
-<body>
-  <main class="popup">
-    <header>
-      <p class="eyebrow">TODAY</p>
-      <h1 id="total-time">0 min</h1>
-      <p class="muted">active browsing time</p>
-    </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Focus Meter</title>
+    <link rel="stylesheet" href="../styles/common.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <header>
+        <p class="eyebrow">TODAY</p>
+        <div class="header-line">
+          <div>
+            <h1 id="total-time">0m</h1>
+            <p class="muted">active browsing</p>
+          </div>
+          <div class="score-badge" aria-label="Focus score">
+            <strong id="focus-score">—</strong>
+            <span>focus</span>
+          </div>
+        </div>
+        <p id="session-status" class="session-status" hidden></p>
+      </header>
 
-    <section aria-labelledby="sites-title">
-      <div class="section-heading">
-        <h2 id="sites-title">Websites</h2>
-        <span id="site-count" class="muted">0</span>
-      </div>
-      <div id="usage-list" class="usage-list">
-        <p class="empty-state">No activity recorded yet.</p>
-      </div>
-    </section>
+      <section aria-labelledby="usage-heading">
+        <div class="section-heading">
+          <h2 id="usage-heading">Top websites</h2>
+          <span id="site-count" class="muted">0 sites</span>
+        </div>
+        <div id="usage-list" class="usage-list"></div>
+        <p id="empty-state" class="empty-state">
+          No active browsing recorded yet.
+        </p>
+      </section>
 
-    <button id="open-options" class="secondary-button" type="button">Open settings</button>
-  </main>
-  <script src="../lib/domain.js"></script>
-  <script src="../lib/storage.js"></script>
-  <script src="popup.js"></script>
-</body>
+      <p id="popup-status" class="status" role="status"></p>
+      <div class="popup-actions">
+        <button id="open-dashboard" class="primary-button" type="button">
+          Open dashboard
+        </button>
+        <button id="open-options" class="secondary-button" type="button">
+          Settings
+        </button>
+      </div>
+    </main>
+    <script src="popup.js"></script>
+  </body>
 </html>
-
