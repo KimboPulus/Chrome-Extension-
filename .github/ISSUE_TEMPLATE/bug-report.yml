@@ -1,0 +1,40 @@
+name: Bug report
+description: Report reproducible tracking, blocking, storage, or UI behavior
+title: "bug: "
+body:
+  - type: markdown
+    attributes:
+      value: Do not attach exported browsing history or other sensitive data.
+  - type: input
+    id: chrome
+    attributes:
+      label: Chrome version
+      placeholder: "Chrome 140.0.x"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Active-time tracking
+        - Media tracking
+        - Website blocking
+        - Settings or schedules
+        - Storage or export
+        - Popup, options, or side panel
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Use example domains and redact personal browsing data.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and observed behavior
+    validations:
+      required: true

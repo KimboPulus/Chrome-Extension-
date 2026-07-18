@@ -2,6 +2,8 @@
 
 Focus Meter is a Chrome extension that tracks active browsing time and blocks websites after a daily limit is reached.
 
+[Download current GitHub release](https://github.com/KimboPulus/Chrome-Extension-Focus-Meter/releases)
+
 ![Dashboard overview](/images/overview.png)
 ![Dashboard overview](/images/overview2.png)
 
@@ -51,6 +53,9 @@ Media pulses are allowed to keep counting when Chrome loses focus or the compute
 
 Browsing totals and settings are stored with `chrome.storage.local`. In-progress tracking state uses `chrome.storage.session` so service-worker restarts do not bridge or lose active intervals. The extension does not send browsing data to a server. Export happens only after a user clicks an export control.
 
+See full [privacy notice](PRIVACY.md) for handled data, permissions, storage, and
+reporting guidance.
+
 ## Development
 
 Run the checks with:
@@ -65,6 +70,10 @@ npm run test:coverage
 npm run build
 npm run package
 ```
+
+Automated and manual browser coverage is documented in
+[compatibility evidence](docs/compatibility.md). GitHub release ZIP is tested and
+checksummed; repository does not claim Chrome Web Store publication.
 
 ## Current limitations
 
