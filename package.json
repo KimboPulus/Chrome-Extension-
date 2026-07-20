@@ -27,8 +27,8 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
-    "@commitlint/cli": "^20.5.3",
-    "@commitlint/config-conventional": "^20.5.3",
+    "@commitlint/cli": "^21.2.1",
+    "@commitlint/config-conventional": "^21.2.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.61.1",
     "@types/chrome": "^0.2.2",
@@ -40,8 +40,8 @@
     "fast-check": "^4.9.0",
     "fflate": "^0.8.3",
     "prettier": "^3.9.5",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.64.0",
+    "typescript": "^7.0.2",
+    "typescript-eslint": "^8.65.0",
     "vitest": "^4.1.10"
   }
 }
