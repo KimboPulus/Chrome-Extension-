@@ -23,7 +23,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "tldts": "^7.4.9"
+    "tldts": "^7.4.11"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
